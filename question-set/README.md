@@ -28,6 +28,9 @@ https://nexttest-schemas.xfqlittlefan.xyz/question-set/v1.json
 ### 2.4. `author` 题组作者
 一个字符串。
 
-## 3. `questions` 题目列表
+## 3. `random` 随机排序
+一个布尔值，决定是否对内容随机排序。
+
+## 4. `questions` 题目列表
 
 一个数组，接受对象。

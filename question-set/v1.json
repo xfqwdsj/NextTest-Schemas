@@ -40,6 +40,11 @@
         "author"
       ]
     },
+    "random": {
+      "type": "boolean",
+      "description": "对题目随机排序",
+      "default": false
+    },
     "questions": {
       "type": "array",
       "description": "题目列表",
@@ -207,6 +212,7 @@
   "required": [
     "version",
     "information",
+    "random",
     "questions"
   ]
 }
