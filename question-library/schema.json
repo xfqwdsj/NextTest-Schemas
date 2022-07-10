@@ -28,6 +28,11 @@
           }
         }
       },
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "description"
+      ],
       "oneOf": [
         {
           "required": ["url"]
@@ -35,11 +40,6 @@
         {
           "required": ["children"]
         }
-      ],
-      "unevaluatedProperties": false,
-      "required": [
-        "title",
-        "description"
       ]
     }
   },
