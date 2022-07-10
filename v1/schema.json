@@ -1,0 +1,175 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://nexttest-schemas.xfqlittlefan.xyz/v1/schema.json",
+    "type": "object",
+    "properties": {
+      "version": {
+        "type": "integer",
+        "enum": [
+          1
+        ],
+        "description": "结构版本"
+      },
+      "information": {
+        "type": "object",
+        "description": "题组信息",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "题组标题"
+          },
+          "description": {
+            "type": "string",
+            "description": "题组描述"
+          },
+          "version": {
+            "type": "string",
+            "description": "题组版本",
+            "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+"
+          },
+          "author": {
+            "type": "string",
+            "description": "题组作者"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "description",
+          "version",
+          "author"
+        ]
+      },
+      "questions": {
+        "type": "array",
+        "description": "题目列表",
+        "items": {
+          "type": "object",
+          "description": "题目",
+          "properties": {
+            "type": {
+              "enum": [
+                "selection",
+                "filling"
+              ],
+              "description": "题目类型"
+            },
+            "question": {
+              "type": "string",
+              "description": "该题的题目文本"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "type",
+            "question"
+          ],
+          "if": {
+            "properties": {
+              "type": {
+                "const": "selection"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "selectionType": {
+                "type": "string",
+                "description": "选择题类型",
+                "enum": [
+                  "single",
+                  "multiple"
+                ],
+                "default": "single"
+              },
+              "options": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "选项",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "description": "选项标题"
+                    },
+                    "isCorrect": {
+                      "type": "boolean",
+                      "description": "是否正确"
+                    },
+                    "score": {
+                      "type": "number",
+                      "description": "该选项的分数"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "title",
+                    "isCorrect",
+                    "score"
+                  ]
+                }
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "selectionType",
+              "options"
+            ],
+            "if": {
+              "properties": {
+                "selectionType": {
+                  "const": "multiple"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "scoringMode": {
+                  "type": "string",
+                  "description": "赋分模式\nloose：宽松模式，选择选项即得对应分\nstrict：严格模式，选对指定数量的选项才得对应分",
+                  "enum": [
+                    "loose",
+                    "strict"
+                  ],
+                  "default": "loose"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "scoringMode"
+              ],
+              "if": {
+                "properties": {
+                  "scoringMode": {
+                    "const": "strict"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "minCorrect": {
+                    "type": "integer",
+                    "description": "最小可得分正确数"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "minCorrect"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+            }
+          }
+        }
+      }
+    },
+    "additionalProperties": false,
+    "required": [
+      "version",
+      "information",
+      "questions"
+    ]
+  }
