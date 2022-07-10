@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexttest-schemas.xfqlittlefan.xyz/question-library/library.json",
+  "type": "object",
+  "definitions": {
+    "child": {
+      "type": "object",
+      "description": "子项",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "标题"
+        },
+        "description": {
+          "type": "string",
+          "description": "描述"
+        },
+        "url": {
+          "type": "string",
+          "description": "题组地址，用于结构末端",
+          "format": "uri"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/child"
+          }
+        }
+      },
+      "oneOf": [
+        {
+          "required": ["url"]
+        },
+        {
+          "required": ["children"]
+        }
+      ],
+      "unevaluatedProperties": false,
+      "required": [
+        "title",
+        "description"
+      ]
+    }
+  },
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "题库标题"
+    },
+    "description": {
+      "type": "string",
+      "description": "题库描述"
+    },
+    "author": {
+      "type": "string",
+      "description": "题库作者"
+    },
+    "children": {
+      "type": "array",
+      "description": "子项列表",
+      "items": {
+        "$ref": "#/definitions/child"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "title",
+    "description",
+    "author",
+    "children"
+  ]
+}

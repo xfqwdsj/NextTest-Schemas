@@ -1,7 +1,7 @@
 # NextTest-Schemas
 The schema for the NextTest question set format.
 
-# [`题组模板`](/question-set/)
+# [`题组模板`](/question-set)
 ## [`v1`](/question-set/v1.json)
 发布于 2022/7/10。
 
