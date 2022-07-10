@@ -4,5 +4,5 @@
 `NextTest` 的所有数据使用 [`YAML`](https://yaml.org/) 结构。
 
 ```
-https://nexttest-schemas.xfqlittlefan.xyz/question-library/schema
+https://nexttest-schemas.xfqlittlefan.xyz/question-library/schema.json
 ```

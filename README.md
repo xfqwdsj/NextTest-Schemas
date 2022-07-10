@@ -2,7 +2,7 @@
 The schema for the NextTest question set format.
 
 # [`题组模板`](/question-set)
-## [`v1`](/question-set/v1)
+## [`v1`](/question-set/v1.json)
 发布于 2022/7/10。
 
 这是第一个版本。
@@ -15,5 +15,4 @@ The schema for the NextTest question set format.
 - 填空题
     - 支持两种赋分模式
 
-# 题库模板
-暂无。
+# [`题库模板`](/question-library/schema.json)

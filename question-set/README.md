@@ -4,9 +4,9 @@
 `NextTest` 的所有数据使用 [`YAML`](https://yaml.org/) 结构。
 
 # 版本
-目前最新的版本为 [`v1`](/question-set/v1)。
+目前最新的版本为 [`v1`](/question-set/v1.json)。
 ```
-https://nexttest-schemas.xfqlittlefan.xyz/question-set/v1
+https://nexttest-schemas.xfqlittlefan.xyz/question-set/v1.json
 ```
 
 # 参考
