@@ -156,10 +156,10 @@
           "properties": {
             "banks": {
               "type": "array",
-              "description": "空位列表",
+              "description": "空列表",
               "items": {
                 "type": "object",
-                "description": "空位",
+                "description": "空",
                 "properties": {
                   "scoringMode": {
                     "type": "string",
@@ -167,15 +167,15 @@
                       "manual",
                       "strict"
                     ],
-                    "description": "该空位的赋分模式\nmanual：手动模式\nstrict：严格模式"
+                    "description": "该空的赋分模式\nmanual：手动模式，手动赋分\nstrict：严格模式，完全匹配才得分"
                   },
                   "placeholder": {
                     "type": "string",
-                    "description": "空位的提示文本"
+                    "description": "该空的提示文本"
                   },
                   "score": {
                     "type": "number",
-                    "description": "该空位的分数"
+                    "description": "该空的分数"
                   },
                   "answer": {
                     "type": "string",
