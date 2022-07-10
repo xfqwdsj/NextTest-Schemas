@@ -1,175 +1,212 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://nexttest-schemas.xfqlittlefan.xyz/v1/schema.json",
-    "type": "object",
-    "properties": {
-      "version": {
-        "type": "integer",
-        "enum": [
-          1
-        ],
-        "description": "结构版本"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexttest-schemas.xfqlittlefan.xyz/v1/schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer",
+      "enum": [
+        1
+      ],
+      "description": "结构版本"
+    },
+    "information": {
+      "type": "object",
+      "description": "题组信息",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "题组标题"
+        },
+        "description": {
+          "type": "string",
+          "description": "题组描述"
+        },
+        "version": {
+          "type": "string",
+          "description": "题组版本",
+          "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+"
+        },
+        "author": {
+          "type": "string",
+          "description": "题组作者"
+        }
       },
-      "information": {
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "description",
+        "version",
+        "author"
+      ]
+    },
+    "questions": {
+      "type": "array",
+      "description": "题目列表",
+      "items": {
         "type": "object",
-        "description": "题组信息",
+        "description": "题目",
         "properties": {
-          "title": {
+          "type": {
             "type": "string",
-            "description": "题组标题"
+            "enum": [
+              "selection",
+              "filling"
+            ],
+            "description": "题目类型"
           },
-          "description": {
+          "question": {
             "type": "string",
-            "description": "题组描述"
-          },
-          "version": {
-            "type": "string",
-            "description": "题组版本",
-            "pattern": "[0-9]+\\.[0-9]+\\.[0-9]+\\+[0-9]+"
-          },
-          "author": {
-            "type": "string",
-            "description": "题组作者"
+            "description": "该题的题目文本，支持 Markdown\n填空题使用 <bank> 创建空位，如需直接显示“ <bank> ”，用“ \\<bank> ”代替。同理“ \\\\<bank> ”显示为“ \\<bank> ”"
           }
         },
-        "additionalProperties": false,
-        "required": [
-          "title",
-          "description",
-          "version",
-          "author"
-        ]
-      },
-      "questions": {
-        "type": "array",
-        "description": "题目列表",
-        "items": {
-          "type": "object",
-          "description": "题目",
+        "if": {
           "properties": {
             "type": {
-              "enum": [
-                "selection",
-                "filling"
-              ],
-              "description": "题目类型"
-            },
-            "question": {
+              "const": "selection"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "selectionType": {
               "type": "string",
-              "description": "该题的题目文本"
+              "description": "选择题类型",
+              "enum": [
+                "single",
+                "multiple"
+              ],
+              "default": "single"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "description": "选项",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "选项标题"
+                  },
+                  "isCorrect": {
+                    "type": "boolean",
+                    "description": "是否正确"
+                  },
+                  "score": {
+                    "type": "number",
+                    "description": "该选项的分数"
+                  }
+                },
+                "unevaluatedProperties": false,
+                "required": [
+                  "title",
+                  "isCorrect",
+                  "score"
+                ]
+              }
             }
           },
           "if": {
             "properties": {
-              "type": {
-                "const": "selection"
+              "selectionType": {
+                "const": "multiple"
               }
             }
           },
           "then": {
             "properties": {
-              "selectionType": {
+              "scoringMode": {
                 "type": "string",
-                "description": "选择题类型",
+                "description": "赋分模式\nloose：宽松模式，选择选项即得对应分\nstrict：严格模式，选对指定数量的选项才得对应分",
                 "enum": [
-                  "single",
-                  "multiple"
+                  "loose",
+                  "strict"
                 ],
-                "default": "single"
-              },
-              "options": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "description": "选项",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "description": "选项标题"
-                    },
-                    "isCorrect": {
-                      "type": "boolean",
-                      "description": "是否正确"
-                    },
-                    "score": {
-                      "type": "number",
-                      "description": "该选项的分数"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "title",
-                    "isCorrect",
-                    "score"
-                  ]
-                }
+                "default": "loose"
               }
             },
             "if": {
               "properties": {
-                "selectionType": {
-                  "const": "multiple"
+                "scoringMode": {
+                  "const": "strict"
                 }
               }
             },
             "then": {
               "properties": {
-                "scoringMode": {
-                  "type": "string",
-                  "description": "赋分模式\nloose：宽松模式，选择选项即得对应分\nstrict：严格模式，选对指定数量的选项才得对应分",
-                  "enum": [
-                    "loose",
-                    "strict"
-                  ],
-                  "default": "loose"
+                "minCorrect": {
+                  "type": "integer",
+                  "description": "最小可得分正确数"
                 }
               },
-              "if": {
-                "properties": {
-                  "scoringMode": {
-                    "const": "strict"
-                  }
-                }
-              },
-              "then": {
-                "properties": {
-                  "minCorrect": {
-                    "type": "integer",
-                    "description": "最小可得分正确数"
-                  }
-                },
-                "additionalProperties": false,
-                "required": [
-                  "minCorrect"
-                ]
-              },
-              "additionalProperties": false,
               "required": [
-                "scoringMode"
+                "minCorrect"
               ]
             },
-            "additionalProperties": false,
             "required": [
-              "selectionType",
-              "options"
+              "scoringMode"
             ]
           },
-          "else": {
-            "properties": {
+          "required": [
+            "selectionType",
+            "options"
+          ]
+        },
+        "else": {
+          "properties": {
+            "banks": {
+              "type": "array",
+              "description": "空位列表",
+              "items": {
+                "type": "object",
+                "description": "空位",
+                "properties": {
+                  "scoringMode": {
+                    "type": "string",
+                    "enum": [
+                      "manual",
+                      "strict"
+                    ],
+                    "description": "该空位的赋分模式\nmanual：手动模式\nstrict：严格模式"
+                  },
+                  "placeholder": {
+                    "type": "string",
+                    "description": "空位的提示文本"
+                  },
+                  "score": {
+                    "type": "number",
+                    "description": "该空位的分数"
+                  },
+                  "answer": {
+                    "type": "string",
+                    "description": "该空位的答案"
+                  }
+                },
+                "required": [
+                  "scoringMode",
+                  "placeholder",
+                  "score",
+                  "answer"
+                ]
+              }
             }
           },
-          "additionalProperties": false,
           "required": [
-            "type",
-            "question"
+            "banks"
           ]
-        }
+        },
+        "unevaluatedProperties": false,
+        "required": [
+          "type",
+          "question"
+        ]
       }
-    },
-    "additionalProperties": false,
-    "required": [
-      "version",
-      "information",
-      "questions"
-    ]
-  }
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "information",
+    "questions"
+  ]
+}
