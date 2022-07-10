@@ -5,9 +5,7 @@
   "properties": {
     "version": {
       "type": "integer",
-      "enum": [
-        1
-      ],
+      "const": 2,
       "description": "结构版本"
     },
     "information": {
