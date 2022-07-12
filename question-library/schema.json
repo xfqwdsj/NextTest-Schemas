@@ -35,35 +35,31 @@
       ],
       "oneOf": [
         {
-          "required": ["url"]
+          "required": [
+            "url"
+          ]
         },
         {
-          "required": ["children"]
+          "required": [
+            "children"
+          ]
         }
       ]
     }
   },
-  "properties": {
-    "title": {
-      "type": "string",
-      "description": "题库标题"
-    },
-    "description": {
-      "type": "string",
-      "description": "题库描述"
-    },
-    "author": {
-      "type": "string",
-      "description": "题库作者"
-    },
-    "children": {
-      "type": "array",
-      "description": "子项列表",
-      "items": {
-        "$ref": "#/definitions/child"
+  "allOf": [
+    {
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "作者"
+        }
       }
+    },
+    {
+      "$ref": "#/definitions/child"
     }
-  },
+  ],
   "additionalProperties": false,
   "required": [
     "title",
