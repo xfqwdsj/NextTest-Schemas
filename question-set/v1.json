@@ -5,9 +5,7 @@
   "properties": {
     "version": {
       "type": "integer",
-      "enum": [
-        1
-      ],
+      "const": 1,
       "description": "结构版本"
     },
     "information": {
@@ -63,147 +61,130 @@
           "question": {
             "type": "string",
             "description": "该题的题目文本，支持 Markdown\n填空题使用 <bank> 创建空位，如需直接显示“ <bank> ”，用“ \\<bank> ”代替。同理“ \\\\<bank> ”显示为“ \\<bank> ”"
-          }
-        },
-        "if": {
-          "properties": {
-            "type": {
-              "const": "selection"
-            }
-          }
-        },
-        "then": {
-          "properties": {
-            "selectionType": {
-              "type": "string",
-              "description": "选择题类型",
-              "enum": [
-                "single",
-                "multiple"
-              ],
-              "default": "single"
-            },
-            "options": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "description": "选项",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "选项标题"
-                  },
-                  "isCorrect": {
-                    "type": "boolean",
-                    "description": "是否正确"
-                  },
-                  "score": {
-                    "type": "number",
-                    "description": "该选项的分数"
-                  }
+          },
+          "selectionType": {
+            "type": "string",
+            "description": "选择题类型",
+            "enum": [
+              "single",
+              "multiple"
+            ],
+            "default": "single"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "选项",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "description": "选项标题"
                 },
-                "unevaluatedProperties": false,
-                "required": [
-                  "title",
-                  "isCorrect",
-                  "score"
-                ]
-              }
+                "isCorrect": {
+                  "type": "boolean",
+                  "description": "是否正确"
+                },
+                "score": {
+                  "type": "number",
+                  "description": "该选项的分数"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "title",
+                "isCorrect",
+                "score"
+              ]
             }
           },
-          "if": {
-            "properties": {
-              "selectionType": {
-                "const": "multiple"
-              }
-            }
+          "scoringMode": {
+            "type": "string",
+            "description": "赋分模式\nloose：宽松模式，选择选项即得对应分\nstrict：严格模式，选对指定数量的选项才得对应分",
+            "enum": [
+              "loose",
+              "strict"
+            ],
+            "default": "loose"
           },
-          "then": {
-            "properties": {
-              "scoringMode": {
-                "type": "string",
-                "description": "赋分模式\nloose：宽松模式，选择选项即得对应分\nstrict：严格模式，选对指定数量的选项才得对应分",
-                "enum": [
-                  "loose",
-                  "strict"
-                ],
-                "default": "loose"
-              }
-            },
-            "if": {
+          "minCorrect": {
+            "type": "integer",
+            "description": "最小可得分正确数"
+          },
+          "blanks": {
+            "type": "array",
+            "description": "空列表",
+            "items": {
+              "type": "object",
+              "description": "空",
               "properties": {
                 "scoringMode": {
-                  "const": "strict"
-                }
-              }
-            },
-            "then": {
-              "properties": {
-                "minCorrect": {
-                  "type": "integer",
-                  "description": "最小可得分正确数"
+                  "type": "string",
+                  "enum": [
+                    "strict",
+                    "manual"
+                  ],
+                  "description": "该空的赋分模式\nmanual：手动模式，手动赋分\nstrict：严格模式，完全匹配才得分",
+                  "default": "strict"
+                },
+                "placeholder": {
+                  "type": "string",
+                  "description": "该空的提示文本"
+                },
+                "score": {
+                  "type": "number",
+                  "description": "该空的分数"
+                },
+                "answer": {
+                  "type": "string",
+                  "description": "该空位的答案"
                 }
               },
               "required": [
-                "minCorrect"
+                "scoringMode",
+                "placeholder",
+                "score",
+                "answer"
               ]
-            },
-            "required": [
-              "scoringMode"
-            ]
-          },
-          "required": [
-            "selectionType",
-            "options"
-          ]
+            }
+          }
         },
-        "else": {
-          "properties": {
-            "banks": {
-              "type": "array",
-              "description": "空列表",
-              "items": {
-                "type": "object",
-                "description": "空",
+        "additionalProperties": false,
+        "required": ["type", "question"],
+        "oneOf": [
+          {
+            "properties": {
+              "type": {
+                "const": "selection"
+              }
+            },
+            "required": ["selectionType", "options", "scoringMode"],
+            "oneOf": [
+              {
                 "properties": {
                   "scoringMode": {
-                    "type": "string",
-                    "enum": [
-                      "manual",
-                      "strict"
-                    ],
-                    "description": "该空的赋分模式\nmanual：手动模式，手动赋分\nstrict：严格模式，完全匹配才得分"
-                  },
-                  "placeholder": {
-                    "type": "string",
-                    "description": "该空的提示文本"
-                  },
-                  "score": {
-                    "type": "number",
-                    "description": "该空的分数"
-                  },
-                  "answer": {
-                    "type": "string",
-                    "description": "该空位的答案"
+                    "const": "loose"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "scoringMode": {
+                    "const": "strict"
                   }
                 },
-                "required": [
-                  "scoringMode",
-                  "placeholder",
-                  "score",
-                  "answer"
-                ]
+                "required": ["minCorrect"]
               }
-            }
+            ]
           },
-          "required": [
-            "banks"
-          ]
-        },
-        "unevaluatedProperties": false,
-        "required": [
-          "type",
-          "question"
+          {
+            "properties": {
+              "type": {
+                "const": "filling"
+              }
+            },
+            "required": ["blanks"]
+          }
         ]
       }
     }
