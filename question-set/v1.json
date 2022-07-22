@@ -150,7 +150,10 @@
           }
         },
         "additionalProperties": false,
-        "required": ["type", "question"],
+        "required": [
+          "type",
+          "question"
+        ],
         "oneOf": [
           {
             "properties": {
@@ -158,22 +161,46 @@
                 "const": "selection"
               }
             },
-            "required": ["selectionType", "options", "scoringMode"],
+            "required": [
+              "selectionType",
+              "options"
+            ],
             "oneOf": [
               {
                 "properties": {
-                  "scoringMode": {
-                    "const": "loose"
+                  "selectionType": {
+                    "const": "single"
                   }
                 }
               },
               {
                 "properties": {
-                  "scoringMode": {
-                    "const": "strict"
+                  "selectionType": {
+                    "const": "multiple"
                   }
                 },
-                "required": ["minCorrect"]
+                "required": [
+                  "scoringMode"
+                ],
+                "oneOf": [
+                  {
+                    "properties": {
+                      "scoringMode": {
+                        "const": "loose"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "scoringMode": {
+                        "const": "strict"
+                      }
+                    },
+                    "required": [
+                      "minCorrect"
+                    ]
+                  }
+                ]
               }
             ]
           },
@@ -183,7 +210,9 @@
                 "const": "filling"
               }
             },
-            "required": ["blanks"]
+            "required": [
+              "blanks"
+            ]
           }
         ]
       }
