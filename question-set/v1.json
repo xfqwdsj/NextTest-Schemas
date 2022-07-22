@@ -4,8 +4,8 @@
   "type": "object",
   "properties": {
     "version": {
-      "type": "integer",
-      "const": 1,
+      "type": "string",
+      "const": "v1",
       "description": "结构版本"
     },
     "information": {
@@ -60,7 +60,7 @@
           },
           "question": {
             "type": "string",
-            "description": "该题的题目文本，支持 Markdown\n填空题使用 <bank> 创建空位，如需直接显示“ <bank> ”，用“ \\<bank> ”代替。同理“ \\\\<bank> ”显示为“ \\<bank> ”"
+            "description": "该题的题目文本，支持 Markdown\n填空题使用 <blank> 创建空位，如需直接显示“ <blank> ”，用“ \\<blank> ”代替。同理“ \\\\<blank> ”显示为“ \\<blank> ”"
           },
           "selectionType": {
             "type": "string",
