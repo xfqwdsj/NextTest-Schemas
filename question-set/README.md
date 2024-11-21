@@ -5,8 +5,9 @@
 
 # 版本
 目前最新的版本为 [`v1`](/question-set/v1.json)。
+
 ```
-https://nexttest-schemas.xfqlittlefan.xyz/question-set/v1.json
+https://nexttest-schemas.ltfan.top/question-set/v1.json
 ```
 
 # 参考
